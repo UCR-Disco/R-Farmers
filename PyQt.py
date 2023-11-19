@@ -12,29 +12,29 @@ class WeatherApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('OurFarmers App')
+        self.setWindowTitle("R'Farmers App")
         self.setGeometry(300, 300, 400, 200)
 
         self.label_city = QLabel('Enter city:', self)
         self.edit_city = QLineEdit(self)
         self.label_result = QLabel('Weather Information will be displayed here.', self)
 
-        btn_get_weather = QPushButton('Get Weather', self)
-        btn_get_weather.clicked.connect(self.get_weather)
+        get_weather = QPushButton('Get Weather', self)
+        get_weather.clicked.connect(self.get_weather)
         # btn_get_weather.clicked.connect(self.collect_info)
 
-        exit_button = QPushButton('Exit', self)
-        exit_button.clicked.connect(self.show_message)
+        exit = QPushButton('Exit', self)
+        exit.clicked.connect(self.show_message)
 
         layout = QVBoxLayout()
         input_layout = QHBoxLayout()
         input_layout.addWidget(self.label_city)
         input_layout.addWidget(self.edit_city)
-        input_layout.addWidget(btn_get_weather)
+        input_layout.addWidget(get_weather)
 
         layout.addLayout(input_layout)
         layout.addWidget(self.label_result)
-        layout.addWidget(exit_button)
+        layout.addWidget(exit)
 
         self.setLayout(layout)
 
@@ -48,13 +48,13 @@ class WeatherApp(QWidget):
         response = requests.get(url, headers=headers).text
         html = etree.HTML(response)
 
-        date_element = html.xpath("/html/body/app-root/app-today/one-column-layout/wu-header/sidenav/mat-sidenav-container/mat-sidenav-content/div/section/div[3]/div[1]/div/div[3]/div/lib-city-today-forecast/div/div[1]/div/a/div/div[2]/span[2]")[0]
-        rain_probability_element = html.xpath("/html/body/app-root/app-today/one-column-layout/wu-header/sidenav/mat-sidenav-container/mat-sidenav-content/div/section/div[3]/div[1]/div/div[3]/div/lib-city-today-forecast/div/div[1]/div/div/div/a[1]")[0]
-        summary_element = html.xpath("/html/body/app-root/app-today/one-column-layout/wu-header/sidenav/mat-sidenav-container/mat-sidenav-content/div/section/div[3]/div[1]/div/div[3]/div/lib-city-today-forecast/div/div[1]/div/div/div/a[2]")[0]
+        date = html.xpath("/html/body/app-root/app-today/one-column-layout/wu-header/sidenav/mat-sidenav-container/mat-sidenav-content/div/section/div[3]/div[1]/div/div[3]/div/lib-city-today-forecast/div/div[1]/div/a/div/div[2]/span[2]")[0]
+        rain_probability = html.xpath("/html/body/app-root/app-today/one-column-layout/wu-header/sidenav/mat-sidenav-container/mat-sidenav-content/div/section/div[3]/div[1]/div/div[3]/div/lib-city-today-forecast/div/div[1]/div/div/div/a[1]")[0]
+        summary = html.xpath("/html/body/app-root/app-today/one-column-layout/wu-header/sidenav/mat-sidenav-container/mat-sidenav-content/div/section/div[3]/div[1]/div/div[3]/div/lib-city-today-forecast/div/div[1]/div/div/div/a[2]")[0]
 
-        date = date_element.text
-        precipitation = rain_probability_element.text
-        summary = summary_element.text
+        date = date.text
+        precipitation = rain_probability.text
+        summary = summary.text
 
         index = precipitation.find('%')
         new_precipitation = int(precipitation[:index])
@@ -63,9 +63,9 @@ class WeatherApp(QWidget):
         self.label_result.setText(result_text)
         your_phone_number, done1 = QtWidgets.QInputDialog.getText(
         self, 'Input Dialog', 'Enter your number:')
-        account_sid = 'account_sid'
-        auth_token = 'token'
-        twilio_phone_number = 'twilio_phone_number'
+        account_sid = 'AC093bb99ccaae6e0a9540661767554e70'
+        auth_token = 'a78f71eb640ca3162f9142514681fc3b'
+        twilio_phone_number = '18556206360'
         if done1:
             client = Client(account_sid, auth_token)
             if new_precipitation >= 70:
